@@ -40,12 +40,13 @@ O projeto foi desenvolvido com foco em aprendizado real — cada decisão de arq
 
 ## Arquitetura
 
+```
 src/
 ├── config/
-│   └── db.ts              # Conexão com MongoDB
+│   └── db.ts
 ├── middleware/
-│   ├── auth.ts            # Verifica JWT
-│   └── adminAuth.ts       # Verifica role de admin
+│   ├── auth.ts
+│   └── adminAuth.ts
 ├── modules/
 │   ├── tickets/
 │   │   ├── ticket.model.ts
@@ -56,6 +57,7 @@ src/
 │       ├── user.controller.ts
 │       └── user.routes.ts
 └── server.ts
+```
 
 ---
 
@@ -124,9 +126,8 @@ Separação de responsabilidades. O `auth` verifica se o usuário está autentic
 
 ## Autor
 
+
 Desenvolvido por Felipe Alves  
 [LinkedIn](https://www.linkedin.com/in/oifelipealves/) · [Portfólio](https://portfolio-two-delta-w8vbs00b29.vercel.app/)
 
----
-
-## Arquitetura
+---## Arquitetura
