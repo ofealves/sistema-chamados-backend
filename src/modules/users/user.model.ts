@@ -27,6 +27,8 @@ const userSchema = new Schema<UserType>(
             default: "user"
         },
     }
+
+    
 );
 
 export default model<UserType>("User", userSchema);
