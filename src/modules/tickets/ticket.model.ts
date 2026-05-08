@@ -1,11 +1,13 @@
-import { Schema, model, connection } from "mongoose";
+import { Schema, model, connection, Types } from "mongoose";
 
 type TicketType = {
     title: string;
     description: string;
     status: "open" | "in_progress" | "closed";
     priority: "low" | "medium" | "high";
-    userId: string;
+
+    userId: Types.ObjectId;
+
     assignedTo?: string | null;
 };
 
@@ -34,7 +36,8 @@ const TicketSchema = new Schema<TicketType>(
         },
 
         userId: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         },
 
@@ -50,6 +53,9 @@ const TicketSchema = new Schema<TicketType>(
 
 const modelName = "Ticket";
 
-export default (connection && connection.models[modelName])
-    ? connection.models[modelName]
-    : model<TicketType>(modelName, TicketSchema);
+const Ticket =
+    connection && connection.models[modelName]
+        ? connection.models[modelName]
+        : model<TicketType>(modelName, TicketSchema);
+
+export default Ticket;

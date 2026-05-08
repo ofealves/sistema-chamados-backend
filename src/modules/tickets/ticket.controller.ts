@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Ticket from "./ticket.model";
 
+// CRIAR TICKET
 export const createTicket = async (req: Request, res: Response) => {
     try {
         const { title, description, priority } = req.body;
@@ -16,10 +17,13 @@ export const createTicket = async (req: Request, res: Response) => {
 
         return res.status(201).json(ticket);
     } catch (error) {
-        return res.status(500).json({ error: "Erro ao criar ticket" });
+        return res.status(500).json({
+            error: "Erro ao criar ticket",
+        });
     }
 };
 
+// LISTAR TICKETS
 export const getTickets = async (req: Request, res: Response) => {
     try {
         const userId = req.user?._id;
@@ -27,22 +31,31 @@ export const getTickets = async (req: Request, res: Response) => {
 
         let tickets;
 
+        // ADMIN vê todos os tickets
         if (role === "admin") {
-            tickets = await Ticket.find({ userId } as any).sort({
-                createdAt: -1,
-            });
+            tickets = await Ticket.find()
+                .populate("userId", "name email")
+                .sort({
+                    createdAt: -1,
+                });
         } else {
-            tickets = await Ticket.find({ userId } as any).sort({
-                createdAt: -1,
-            });
+            // usuário comum vê só os próprios
+            tickets = await Ticket.find({ userId } as any)
+                .populate("userId", "name email")
+                .sort({
+                    createdAt: -1,
+                });
         }
 
         return res.status(200).json(tickets);
     } catch (error) {
-        return res.status(500).json({ error: "Erro ao buscar tickets" });
+        return res.status(500).json({
+            error: "Erro ao buscar tickets",
+        });
     }
 };
 
+// BUSCAR TICKET POR ID
 export const getTicketById = async (req: Request, res: Response) => {
     try {
         const userId = req.user?._id;
@@ -53,12 +66,12 @@ export const getTicketById = async (req: Request, res: Response) => {
         if (role === "admin") {
             ticket = await Ticket.findOne({
                 _id: req.params.id,
-            } as any);
+            } as any).populate("userId", "name email");
         } else {
             ticket = await Ticket.findOne({
                 _id: req.params.id,
                 userId,
-            } as any);
+            } as any).populate("userId", "name email");
         }
 
         if (!ticket) {
@@ -75,6 +88,7 @@ export const getTicketById = async (req: Request, res: Response) => {
     }
 };
 
+// ATUALIZAR TICKET
 export const updateTicket = async (req: Request, res: Response) => {
     try {
         const userId = req.user?._id;
@@ -87,7 +101,7 @@ export const updateTicket = async (req: Request, res: Response) => {
 
         if (role === "admin") {
             updated = await Ticket.updateOne(
-                { _id: ticketId },
+                { _id: ticketId } as any,
                 { status }
             );
         } else {
@@ -95,7 +109,7 @@ export const updateTicket = async (req: Request, res: Response) => {
                 {
                     _id: ticketId,
                     userId,
-                },
+                } as any,
                 {
                     status,
                 }
@@ -118,6 +132,7 @@ export const updateTicket = async (req: Request, res: Response) => {
     }
 };
 
+// DELETAR TICKET
 export const deleteTicket = async (req: Request, res: Response) => {
     try {
         const userId = req.user?._id;
@@ -130,12 +145,12 @@ export const deleteTicket = async (req: Request, res: Response) => {
         if (role === "admin") {
             deleted = await Ticket.deleteOne({
                 _id: ticketId,
-            });
+            } as any);
         } else {
             deleted = await Ticket.deleteOne({
                 _id: ticketId,
                 userId,
-            });
+            } as any);
         }
 
         if (deleted.deletedCount === 0) {
