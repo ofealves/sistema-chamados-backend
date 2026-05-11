@@ -5,6 +5,7 @@ import cors from "cors";
 import { connectDB } from "./config/db";
 import ticketRoutes from "./modules/tickets/ticket.routes";
 import userRoutes from "./modules/users/user.routes";
+import logsRoutes from "./modules/logs/logs.routes";
 
 
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/tickets", ticketRoutes);
 app.use("/auth", userRoutes);
+app.use("/logs", logsRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API rodando 🚀" });
