@@ -1,4 +1,4 @@
-import { Schema, model, connection, Types } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 export type LogsType = {
     action: string;
@@ -6,6 +6,7 @@ export type LogsType = {
     ticketId: Types.ObjectId;
     details?: string;
     createdAt?: Date;
+    updatedAt?: Date;
 };
 
 const LogsSchema = new Schema<LogsType>(
@@ -31,9 +32,10 @@ const LogsSchema = new Schema<LogsType>(
             type: String,
             default: "",
         },
+    },
+    {
+        timestamps: true,
     }
 );
-
-const modelName = "Logs";
 
 export default model<LogsType>("Logs", LogsSchema);
