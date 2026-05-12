@@ -2,6 +2,15 @@ import { Request, Response } from "express";
 import Ticket from "./ticket.model";
 import { createLog } from "../logs/logs.controller";
 
+
+const translateStatus = (status: string) => {
+    if (status === "open") return "Aberto";
+    if (status === "in_progress") return "Em andamento";
+    if (status === "closed") return "Fechado";
+
+    return status;
+};
+
 // CRIAR TICKET
 export const createTicket = async (req: Request, res: Response) => {
     try {
@@ -85,7 +94,12 @@ export const updateTicket = async (req: Request, res: Response) => {
         }
 
         if (userId) {
-            await createLog("ticket_updated", userId, ticketId as string, `Status atualizado para "${status}"`);
+            await createLog(
+                "ticket_updated",
+                userId,
+                ticketId as string,
+                `Status atualizado para "${translateStatus(status)}"`
+            );
         }
 
         return res.status(200).json({ message: "Ticket atualizado" });
@@ -114,7 +128,7 @@ export const deleteTicket = async (req: Request, res: Response) => {
         }
 
         if (userId) {
-            await createLog("ticket_deleted", userId, ticketId as string, `Ticket deletado`);
+            await createLog("ticket_deleted", userId, ticketId as string, `Ticket removido do sistema`);
         }
 
         return res.status(200).json({ message: "Ticket deletado" });
