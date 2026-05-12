@@ -7,6 +7,7 @@ export type LogsType = {
     details?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    ticketTitle?: string;
 };
 
 const LogsSchema = new Schema<LogsType>(
@@ -14,6 +15,11 @@ const LogsSchema = new Schema<LogsType>(
         action: {
             type: String,
             required: true,
+        },
+
+        ticketTitle: {
+            type: String,
+            default: "",
         },
 
         userId: {

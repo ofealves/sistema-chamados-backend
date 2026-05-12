@@ -6,10 +6,17 @@ export const createLog = async (
     action: string,
     userId: Types.ObjectId | string,
     ticketId: Types.ObjectId | string,
-    details?: string
+    details?: string,
+    ticketTitle?: string
 ) => {
     try {
-        await Logs.create({ action, userId, ticketId, details });
+        await Logs.create({
+            action,
+            userId,
+            ticketId,
+            details,
+            ticketTitle,
+        });
     } catch (error) {
         console.error("Erro ao criar log:", error);
     }
